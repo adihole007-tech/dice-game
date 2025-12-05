@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Dice | Premium 3D Dice Roller</title>
+    <meta name="description"
+        content="A premium, interactive 3D dice rolling game with stunning neon aesthetics and smooth animations.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <main class="game-container">
+        <div class="glass-panel">
+            <header>
+                <h1>Neon Dice</h1>
+                <p>Roll for destiny</p>
+            </header>
+
+            <!-- Setup Screen -->
+            <div id="setup-screen" class="screen active">
+                <h2>Select Players</h2>
+                <div class="player-select">
+                    <button class="select-btn" data-players="2">2 Players</button>
+                    <button class="select-btn" data-players="3">3 Players</button>
+                    <button class="select-btn" data-players="4">4 Players</button>
+                </div>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="game-screen" class="screen hidden">
+                <div class="turn-indicator">
+                    <span id="current-player-name">Player 1</span>'s Turn
+                </div>
+
+                <div class="dice-arena">
+                    <div class="die" id="die-1">
+                        <div class="face front"></div>
+                        <div class="face back"></div>
+                        <div class="face right"></div>
+                        <div class="face left"></div>
+                        <div class="face top"></div>
+                        <div class="face bottom"></div>
+                    </div>
+                    <div class="die" id="die-2">
+                        <div class="face front"></div>
+                        <div class="face back"></div>
+                        <div class="face right"></div>
+                        <div class="face left"></div>
+                        <div class="face top"></div>
+                        <div class="face bottom"></div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <div class="score-display">
+                        <span class="label">Round Score</span>
+                        <span class="value" id="round-score">0</span>
+                    </div>
+                    <button id="roll-btn" class="glow-button">ROLL DICE</button>
+                </div>
+
+                <div id="scoreboard" class="scoreboard">
+                    <!-- Player scores will be injected here -->
+                </div>
+
+                <button id="reset-btn" class="text-btn hidden">End Game</button>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>

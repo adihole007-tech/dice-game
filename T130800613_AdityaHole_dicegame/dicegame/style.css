@@ -1,0 +1,356 @@
+:root {
+    --bg-color: #0f0c29;
+    --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --primary-neon: #00f2ff;
+    --secondary-neon: #bc13fe;
+    --text-color: #ffffff;
+    --die-color: #ffffff;
+    --pip-color: #24243e;
+    --die-size: 100px;
+    --active-player-bg: rgba(0, 242, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    overflow: hidden;
+}
+
+.game-container {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 700px;
+    /* Slightly wider for multiplayer */
+    padding: 20px;
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-height: 600px;
+    justify-content: center;
+}
+
+header h1 {
+    font-weight: 700;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: linear-gradient(to right, var(--primary-neon), var(--secondary-neon));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 20px rgba(188, 19, 254, 0.3);
+}
+
+header p {
+    font-weight: 300;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+/* Screens */
+.screen {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    width: 100%;
+    transition: opacity 0.5s ease;
+}
+
+.screen.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.screen.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Setup Screen */
+.player-select {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.select-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--primary-neon);
+    color: var(--text-color);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.select-btn:hover {
+    background: var(--primary-neon);
+    color: #0f0c29;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+}
+
+/* Game Screen */
+.turn-indicator {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--secondary-neon);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.dice-arena {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    perspective: 600px;
+    padding: 2rem 0;
+}
+
+.die {
+    width: var(--die-size);
+    height: var(--die-size);
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--die-color);
+    border-radius: 16px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0;
+}
+
+.face::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
+.front {
+    transform: translateZ(50px);
+}
+
+.back {
+    transform: rotateY(180deg) translateZ(50px);
+}
+
+.right {
+    transform: rotateY(90deg) translateZ(50px);
+}
+
+.left {
+    transform: rotateY(-90deg) translateZ(50px);
+}
+
+.top {
+    transform: rotateX(90deg) translateZ(50px);
+}
+
+.bottom {
+    transform: rotateX(-90deg) translateZ(50px);
+}
+
+.front::before {
+    background-image: radial-gradient(circle, var(--pip-color) 8px, transparent 9px);
+    background-position: center;
+}
+
+.back::before {
+    background-image: radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px);
+    background-position: 20% 20%, 20% 50%, 20% 80%, 80% 20%, 80% 50%, 80% 80%;
+}
+
+.right::before {
+    background-image: radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px);
+    background-position: 20% 20%, 50% 50%, 80% 80%;
+}
+
+.left::before {
+    background-image: radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px);
+    background-position: 20% 20%, 80% 20%, 20% 80%, 80% 80%;
+}
+
+.top::before {
+    background-image: radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px);
+    background-position: 20% 20%, 80% 20%, 50% 50%, 20% 80%, 80% 80%;
+}
+
+.bottom::before {
+    background-image: radial-gradient(circle, var(--pip-color) 8px, transparent 9px), radial-gradient(circle, var(--pip-color) 8px, transparent 9px);
+    background-position: 20% 20%, 80% 80%;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.score-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-display .label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.score-display .value {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary-neon);
+    text-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+}
+
+.glow-button {
+    background: transparent;
+    border: 2px solid var(--primary-neon);
+    color: var(--primary-neon);
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Outfit', sans-serif;
+}
+
+.glow-button:hover {
+    background: var(--primary-neon);
+    color: #0f0c29;
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.6);
+}
+
+.glow-button:active {
+    transform: scale(0.95);
+}
+
+/* Scoreboard */
+.scoreboard {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.player-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 12px;
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.player-card.active {
+    background: var(--active-player-bg);
+    border-color: var(--primary-neon);
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+.player-card.winner {
+    background: rgba(188, 19, 254, 0.2);
+    border-color: var(--secondary-neon);
+    box-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
+}
+
+.player-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.player-score {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.text-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    text-decoration: underline;
+    margin-top: 1rem;
+}
+
+.text-btn:hover {
+    color: white;
+}
+
+@media (max-width: 600px) {
+    .dice-arena {
+        gap: 2rem;
+    }
+
+    .glass-panel {
+        padding: 2rem;
+    }
+
+    .scoreboard {
+        gap: 0.5rem;
+    }
+
+    .player-card {
+        min-width: 80px;
+        padding: 0.5rem;
+    }
+}
